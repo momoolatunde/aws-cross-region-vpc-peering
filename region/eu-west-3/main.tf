@@ -11,4 +11,15 @@ module "vpc" {
   web_subnet_names           = var.web_subnet_names
   database_subnet_names      = var.database_subnet_names
   global_tags                = var.global_tags
+  nat_gateway_ids            = module.nat.nat_gateway_ids
+}
+
+# Creating NAT gateways with associated Elastic IPs in specified subnets
+module "nat" {
+  source              = "../../modules/nat"
+  elastic_ip_names    = var.elastic_ip_names
+  nat_gateway_names   = var.nat_gateway_names
+  subnets_ids         = module.vpc.subnets_ids
+  global_tags         = var.global_tags
+  internet_gateway_id = module.vpc.internet_gateway_id
 }
