@@ -56,3 +56,15 @@ variable "database_subnet_names" {
 variable "global_tags" {
   type = map(string)
 }
+
+# Variable for specifying the names of the Elastic IPs
+variable "elastic_ip_names" {
+  type        = list(string)
+  description = "Names for the Elastic IPs"
+}
+
+# Variable for specifying the names of the NAT Gateways
+variable "nat_gateway_names" {
+  type        = list(string)
+  description = "Names for the Nat Gateways"
+}
