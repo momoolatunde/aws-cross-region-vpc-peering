@@ -96,6 +96,31 @@ resource "aws_subnet" "web_subnets" {
   )
 }
 
+# Route table for web subnets with NAT gateway routing
+resource "aws_route_table" "web_route_table" {
+  vpc_id = aws_vpc.main_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = var.nat_gateway_ids[0]
+  }
+
+  tags = merge(
+    var.global_tags,
+    {
+      Name        = "WebRouteTable"
+      Description = "Routes web subnet traffic via NAT Gateway"
+    }
+  )
+}
+
+# Association of private web subnets with the web route table
+resource "aws_route_table_association" "web_route_table_association" {
+  count          = length(var.web_subnet_cidr_block)
+  subnet_id      = aws_subnet.web_subnets[count.index].id
+  route_table_id = aws_route_table.web_route_table.id
+}
+
 # -- Database Subnets -- #
 
 # Subnet resource for creating private database subnets
@@ -114,4 +139,29 @@ resource "aws_subnet" "database_subnets" {
       Description = "Private database subnets in ${var.region} region"
     }
   )
+}
+
+# Route table for database subnets with NAT gateway routing
+resource "aws_route_table" "database_route_table" {
+  vpc_id = aws_vpc.main_vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = var.nat_gateway_ids[1]
+  }
+
+  tags = merge(
+    var.global_tags,
+    {
+      Name        = "DatabaseRouteTable"
+      Description = "Routes web subnet traffic via NAT Gateway"
+    }
+  )
+}
+
+# Association of private database subnets with the database route table
+resource "aws_route_table_association" "database_route_table_association" {
+  count          = length(var.database_subnet_cidr_block)
+  subnet_id      = aws_subnet.database_subnets[count.index].id
+  route_table_id = aws_route_table.database_route_table.id
 }

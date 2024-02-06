@@ -60,3 +60,9 @@ variable "global_tags" {
   description = "A map of tags to be applied to all resources."
   type        = map(string)
 }
+
+# Variable for storing the list of NAT Gateway IDs
+variable "nat_gateway_ids" {
+  description = "List of NAT Gateway IDs"
+  type        = list(string)
+}
