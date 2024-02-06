@@ -30,3 +30,9 @@ global_tags = {
   Environment = "Development"
   ManagedBy   = "Terraform"
 }
+
+# Names for the Elastic IPs
+elastic_ip_names = ["ElasticIP1", "ElasticIP2"]
+
+# Names for the NAT gateways
+nat_gateway_names = ["NatGateway1", "NatGateway2"]
