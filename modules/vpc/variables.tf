@@ -16,7 +16,6 @@ variable "region" {
   type        = string
 }
 
-
 # Variable for defining the CIDR blocks for public subnets within the VPC
 variable "subnet_cidr_block" {
   type        = list(string)
